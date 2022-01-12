@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/transfo.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,13 +16,21 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>
+						Demo transfo
+					</h1>
+				</section>
+				<section data-state="time">
+					<h2 class="js-time">Current Time</h2>
+				</section>
 				<section>
 					<section>Vertical Slide 1</section>
 					<section>Vertical Slide 2</section>
 				</section>
-				<section>Slide 4</section>
+				<section>
+					<video data-autoplay src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
+				</section>
 				<section>Slide 5</section>
 			</div>
 		</div>
@@ -31,12 +39,16 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
+				autoSlide: 5000,
+  				loop: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
@@ -53,6 +65,14 @@
 					{ src: 'https://reveal-multiplex.glitch.me/client.js', async: true }
   				]
 			});
+
+			// Called each time the slide with the "time" state is made visible
+			Reveal.addEventListener( 'time', () => setInterval(function() {
+				var DateTime = luxon.DateTime.local().setZone(luxon.DateTime.local().zoneName);
+
+				const time = document.querySelector('.js-time');
+    			time.innerHTML= DateTime.toFormat("HH':'mm':'ss");
+			}));
 		</script>
 	</body>
 </html>
