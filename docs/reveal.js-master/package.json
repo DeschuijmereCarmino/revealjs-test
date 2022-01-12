@@ -96,11 +96,5 @@
       "no-eq-null": 2,
       "no-unused-expressions": 0
     }
-  },
-  "dependencies": {
-    "node": "^17.3.0",
-    "node-static": "^0.7.11",
-    "reveal-multiplex": "^0.1.0",
-    "static": "^2.0.0"
   }
 }
