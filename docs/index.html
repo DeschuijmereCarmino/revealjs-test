@@ -31,7 +31,36 @@
 				<section>
 					<video data-autoplay src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
 				</section>
-				<section>Slide 5</section>
+				<section>
+					<div style="background-color: white; border-radius: 1rem; padding: 1rem;">
+						<canvas data-chart="line" >
+							<!--
+							{
+							 "data": {
+							  "labels": ["January"," February"," March"," April"," May"," June"," July"],
+							  "datasets":[
+							   {
+								"data":[65,59,80,81,56,55,40],
+								"label":"My first dataset","backgroundColor":"rgba(20,220,220,.8)"
+							   },
+							   {
+								"data":[28,48,40,19,86,27,90],
+								"label":"My second dataset","backgroundColor":"rgba(220,120,120,.8)"
+							   }
+							  ]
+							 }
+							}
+							-->
+						</canvas></div>
+				</section>
+				<section mqtt>
+					<h1>Temperature:</h1>
+					<h2>
+					  <span json-field="temperature">
+						livingroom/sensor/A
+					  </span> °
+					</h2>
+				</section>
 			</div>
 		</div>
 
@@ -40,6 +69,8 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"></script>
+		<script src="plugin/chart/plugin.js"></script>
 
 		<script>
 			// More info about initialization & config:
@@ -51,7 +82,7 @@
   				loop: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChart  ],
 				multiplex: {
 					// Example values. To generate your own, see the socket.io server instructions.
 					secret: null, // null so the clients do not have control of the master presentation
@@ -63,7 +94,38 @@
 				dependencies: [
 					{ src: 'https://reveal-multiplex.glitch.me/socket.io/socket.io.js', async: true },
 					{ src: 'https://reveal-multiplex.glitch.me/client.js', async: true }
-  				]
+  				],
+
+				// ...
+				chart: {
+					defaults: {
+						color: 'black', // color of labels
+						scale: {
+							beginAtZero: true,
+							ticks: { stepSize: 1 },
+							grid: { color: "black" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+				},
+
+				//MQTT Settings
+				mqtt_broker: '192.168.1.111', // Broker address
+				mqtt_port: '3000', // MQTT over Web Socket port
+				mqtt_username: '', // username [optional]
+				mqtt_password: '', // username [optional]
+
+				// Optional reveal.js plugins
+				dependencies: [
+				// other dependencies ...
+
+				// add THIS dependencies for MQTT plugin
+				{ src: 'plugin/mqtt/mqttws31.js', async: true },
+				{ src: 'plugin/mqtt/mqtt.js', async: true }
+
+				]
 			});
 
 			// Called each time the slide with the "time" state is made visible
