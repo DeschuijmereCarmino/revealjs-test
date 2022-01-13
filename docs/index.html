@@ -32,34 +32,16 @@
 					<video data-autoplay src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
 				</section>
 				<section>
-					<div style="background-color: white; border-radius: 1rem; padding: 1rem;">
-						<canvas data-chart="line" >
-							<!--
-							{
-							 "data": {
-							  "labels": ["January"," February"," March"," April"," May"," June"," July"],
-							  "datasets":[
-							   {
-								"data":[65,59,80,81,56,55,40],
-								"label":"My first dataset","backgroundColor":"rgba(20,220,220,.8)"
-							   },
-							   {
-								"data":[28,48,40,19,86,27,90],
-								"label":"My second dataset","backgroundColor":"rgba(220,120,120,.8)"
-							   }
-							  ]
-							 }
-							}
-							-->
-						</canvas></div>
-				</section>
-				<section mqtt>
-					<h1>Temperature:</h1>
-					<h2>
-					  <span json-field="temperature">
-						livingroom/sensor/A
-					  </span> °
-					</h2>
+					<div class="flex-container">
+						<div class="flex-item flex-item--1">
+							<canvas data-chart="line">
+								Month, January, February, March, April, May, June, July
+								My first dataset, 65, 59, 80, 81, 56, 55, 40
+								My second dataset, 28, 48, 40, 19, 86, 27, 90
+							</canvas>
+						</div>
+						<div class="flex-item flex-item--2">dit is een test met een lange text, wat gebeurt er dan met een lange text?</div>
+					</div>
 				</section>
 			</div>
 		</div>
@@ -78,8 +60,14 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
-				autoSlide: 5000,
-  				loop: true,
+				// autoSlide: 5000,
+  				// loop: true,
+
+				width: "100%",
+				height: "100%",
+				margin: 0,
+				minScale: 1,
+				maxScale: 1,
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealChart  ],
@@ -111,21 +99,21 @@
 					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
 				},
 
-				//MQTT Settings
-				mqtt_broker: '192.168.1.111', // Broker address
-				mqtt_port: '3000', // MQTT over Web Socket port
-				mqtt_username: '', // username [optional]
-				mqtt_password: '', // username [optional]
+			// 	//MQTT Settings
+			// 	mqtt_broker: '192.168.1.111', // Broker address
+			// 	mqtt_port: '3000', // MQTT over Web Socket port
+			// 	mqtt_username: '', // username [optional]
+			// 	mqtt_password: '', // username [optional]
 
-				// Optional reveal.js plugins
-				dependencies: [
-				// other dependencies ...
+			// 	// Optional reveal.js plugins
+			// 	dependencies: [
+			// 	// other dependencies ...
 
-				// add THIS dependencies for MQTT plugin
-				{ src: 'plugin/mqtt/mqttws31.js', async: true },
-				{ src: 'plugin/mqtt/mqtt.js', async: true }
+			// 	// add THIS dependencies for MQTT plugin
+			// 	{ src: 'plugin/mqtt/mqttws31.js', async: true },
+			// 	{ src: 'plugin/mqtt/mqtt.js', async: true }
 
-				]
+			// 	]
 			});
 
 			// Called each time the slide with the "time" state is made visible
