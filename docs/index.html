@@ -17,17 +17,99 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section class="c-dashboard">
+				<section class="c-dashboard" data-state="duiktank">
 					<div class="c-infobar">
-
+						<div class="c-infobar-logo">
+							<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="120"
+							height="40"
+							viewBox="0 0 314.152 129"
+							  >
+							<g id="logo" transform="translate(-869 -516)">
+							  <g
+								id="Group_51"
+								data-name="Group 51"
+								transform="translate(1044.911 516)"
+							  >
+								<text
+								  id="FO"
+								  transform="translate(54.241 82.347)"
+								  fill="#fff"
+								  font-size="77"
+								  font-family="RobotoCondensed-Light, Roboto"
+								  font-weight="300"
+								>
+								  <tspan x="0" y="0">FO</tspan>
+								</text>
+								<path
+								  id="Path_1"
+								  data-name="Path 1"
+								  d="M399.8,176.58,446.446,109.4H417.887L438.14,56.58l-46.082,67.751h27.877Z"
+								  transform="translate(-392.058 -56.58)"
+								  fill="#ec1839"
+								/>
+							  </g>
+							  <text
+								id="TRAN"
+								transform="translate(869 597.347)"
+								fill="#fff"
+								font-size="76"
+								font-family="RobotoCondensed-Light, Roboto"
+								font-weight="300"
+							  >
+								<tspan x="0" y="0">TRAN</tspan>
+							  </text>
+							</g>
+						  </svg>
+						</div>
+						<div class="c-infobar-title">
+							De duiktank
+						</div>
+						<div class="c-infobar-text">
+							<p> De duiktank was een oude silo die gebruikt werd om water in op te slaan. 
+								Hedendaags is die gerenoveerd tot een duiktank waardat er heel wat duik oefeningen worden gehouden.
+							</p>
+							<p>De inhoud van de duiktank bedraagt ongeveer 5000 liter water.</p>
+						</div>
+						<svg viewbox="0 0 10 6.7" class="c-infobar-backgroundImage">
+							<defs>
+								<clipPath id="clip">
+									<polygon points="0 0, 100 30, 0 100, 0 100" />
+								</clipPath>
+							</defs>
+							<image href="media/transfo.jpeg" x="0" y="-3" height="12" width="10" clip-path="url(#clip)"/>
+						</svg>
 					</div>
 					<div class="c-container">
-						<div class="c-card"></div>
-						<div class="c-card"></div>
-						<div class="c-card"></div>
-						<div class="c-card"></div>
+						<div class="c-card">
+							<div class="c-card-title">Vandaag</div>
+							<div class="c-card-container">
+								<canvas id="c-today-chart" style="border-radius: 8px;"></canvas>
+							</div>
+						</div>
+						<div class="c-card">
+							<div class="c-card-title">Maand</div>
+							<div class="c-card-container">
+								<canvas id="c-month-chart" style="border-radius: 8px;"></canvas>
+							</div>
+						</div>
+						<div class="c-card">
+							<div class="c-card-title">Title</div>
+							<div class="c-card-container"></div>
+						</div>
+						<div class="c-card">
+							<div class="c-card-title c-quiz-title">Het verbruik van de duiktank is ongeveer hoeveel wattage?</div>
+							<ol class="c-quiz-container">
+								<li class="c-quiz-question">2000</li>
+								<li class="c-quiz-question">3000</li>
+								<li class="c-quiz-question">4000</li>
+								<li class="c-quiz-question">5000</li>
+							</ol>
+						</div>
 					</div>
 				</section>
+				<section></section>
 			</div>
 		</div>
 
@@ -36,6 +118,7 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="plugin/fullscreen/plugin.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
 		<script>
 			// More info about initialization & config:
@@ -47,6 +130,155 @@
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealFullscreen ],
+			});
+
+			Reveal.addEventListener("duiktank", function () {
+				const pluginCustomBackground = {
+				id: 'custom_canvas_background_color',
+				beforeDraw: (chart) => {
+					const ctx = chart.canvas.getContext('2d');
+					ctx.save();
+					ctx.globalCompositeOperation = 'destination-over';
+					ctx.fillStyle = '#15182D';
+					ctx.fillRect(0, 0, chart.width, chart.height);
+					ctx.restore();
+				}
+				};
+
+				const urlToday = "https://enm1.azurewebsites.net/api/power/duiktank/usage/day/Stopcontacten_Circuit_Niveau0_Cafetaria_Totaal";
+				fetch(urlToday)
+				.then((response) => response.json())
+				.then((data) => {
+				let responseData = data.data[0].values;
+				let arrayData = [];
+
+				console.log(responseData);
+
+				responseData.forEach((element) => {
+					arrayData.push(element.value);
+				});
+
+
+				const ctxToday = document.getElementById("c-today-chart").getContext("2d");
+				const todayChart = new Chart(ctxToday, {
+						type: "bar",
+						data: {
+							labels: ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00","6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00", "19:00", "20:00", "21:00", "22:00", "23:00","24:00"],
+							datasets: [
+								{
+								label: "Verbruik duiktank in wattage",
+								data: arrayData,
+								backgroundColor: [
+											"rgba(255, 99, 132)",
+										],
+								borderColor: [
+											"rgba(255, 99, 132, 1)",
+										],
+								}
+						]
+						//end of data
+						},
+						options: {
+						plugins:{
+							legend: {
+							display: true,
+							labels: {
+								color: 'white'
+							}
+							},
+						},
+						scales:{
+							y: {
+							grid:{
+								color:"white"
+							},
+							ticks:{
+								color: "white"
+							}
+							},
+							x: {
+							grid:{
+								color:"white"
+							},
+							ticks:{
+								color: "white"
+							}
+							},
+						}
+						},
+						//end of options
+						plugins:[pluginCustomBackground],
+					});
+				//end of fetch 
+				});
+
+				const urlMonth = "https://enm1.azurewebsites.net/api/power/duiktank/usage/month/Stopcontacten_Circuit_Niveau0_Cafetaria_Totaal";
+				fetch(urlMonth)
+				.then((response) => response.json())
+				.then((data) => {
+				let responseData = data.data[0].values;
+				let arrayData = [];
+
+				console.log(responseData);
+
+				responseData.forEach((element) => {
+					arrayData.push(element.value);
+				});
+
+
+				const ctxMonth = document.getElementById("c-month-chart").getContext("2d");
+				const monthChart = new Chart(ctxMonth, {
+					type: "line",
+					data: {
+					labels: ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18","19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29" , "30", "31"],
+					datasets: [
+						{
+						label: "Verbruik duiktank in wattage",
+						data: arrayData,
+						backgroundColor: [
+									"rgba(255, 99, 132, 0.2)",
+								],
+						borderColor: [
+									"rgba(255, 99, 132, 1)",
+								],
+						}
+					]
+					//end of data
+					},
+					options: {
+					plugins:{
+						legend: {
+						display: true,
+						labels: {
+							color: 'white'
+						}
+						},
+					},
+					scales:{
+						y: {
+						grid:{
+							color:"white"
+						},
+						ticks:{
+							color: "white"
+						}
+						},
+						x: {
+						grid:{
+							color:"white"
+						},
+						ticks:{
+							color: "white"
+						}
+						},
+					}
+					},
+					//end of options
+					plugins:[pluginCustomBackground],
+				});
+
+				// end of fetch 
+				});
 			});
 		</script>
 	</body>
