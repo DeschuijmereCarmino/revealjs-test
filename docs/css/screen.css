@@ -168,11 +168,11 @@ html.reveal-full-page .reveal {
   min-width: 35vw;
 }
 
-.c-card--test{
+.c-card--span{
   display: flex;
 }
 
-.c-card--test div{
+.c-card__container--side{
   margin-left: 2rem;
 }
 
